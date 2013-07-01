@@ -1,0 +1,6 @@
+gcc -g curly_diagnoser.c -o curly_diagnoser
+
+gcc -g lexer.c -o lexer
+
+python tester.py
+

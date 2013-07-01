@@ -1,5 +1,5 @@
-/* No error */
-public class JavaCurly1
+/* Missing open and excess close*/
+public class JavaCurly21
 {
     int[] array = {1, 1, 2, 3, 5, 8};
     public static void main(String[] args)

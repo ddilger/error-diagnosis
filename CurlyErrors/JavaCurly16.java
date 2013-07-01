@@ -1,5 +1,5 @@
-/* No error */
-public class JavaCurly1
+/* Missing close */
+public class JavaCurly16
 {
     public static void main(String[] args)
     {

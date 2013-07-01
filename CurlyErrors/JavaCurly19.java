@@ -1,5 +1,5 @@
-/* No error */
-public class JavaCurly1
+/* Insufficient open (unclosed array) */
+public class JavaCurly19
 {
     int[] array = 1, 1, 2, 3, 5, 8};
     public static void main(String[] args)

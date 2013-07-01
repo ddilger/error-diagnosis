@@ -1,5 +1,5 @@
 /* Excess open */
-public class JavaCurly1
+public class JavaCurly13
 {
     public static void main(String[] args)
     {

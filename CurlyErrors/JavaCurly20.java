@@ -1,4 +1,4 @@
-/* No error */
+/* Unterminated Array */
 public class JavaCurly1
 {
     int[] array = {1, 1, 2, 3, 5, 8;

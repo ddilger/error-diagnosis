@@ -1,5 +1,5 @@
 /* No error */
-public class JavaCurly1
+public class JavaCurly12
 {
     public static void main(String[] args)
     {

@@ -1,0 +1,44 @@
+How to approach this problem:
+
+Label blocks and mark them with a return type (return or not)
+
+If blocks are commented with "Beginning" and "End" then it's easier
+
+Say if the block is sure to terminate or has a chance to not
+terminate: don't try to find blocks which won't terminate
+
+definite returns are those which have a return and no if statement, or
+a return and an else statement (label the blocks again with this)
+
+When analyzing an if-else chain or switch statement, build a list of
+the elements in the chain and provide the appropriate coloration.
+
+Use recursion to analyze down and colorize blocks within a method
+
+So: 
+build a list of blocks, color them "No return", "Needs Return" or "Has
+return". Any block colored "Needs return" is reported as a possible candidate.
+
+Should I not only point to the method, but also candidate areas in the
+method where the return statement might not be executed?
+
+Note: compound errors aren't really possible in this program. 
+
+If I tokenized the way I did with curly errors, I couldn't analyze the
+logic. So I need to keep track of the lexemes in a symbol table.
+
+But do I really need to analyze the logic?
+
+I have to distinguish between opentok and open curly, because of the
+chance of having one line if statements (this can also pose a problem
+with the curly diagnosis)
+
+By having a good lexer, I can use tokens to distinguish terminable
+loops and nonterminating loops.
+
+Terminable methods have a certain token pattern, so they can be
+analyzed by simple parsing without any semantic action. 
+
+Terminable methods can probably (?) be represented using LL(1)
+grammars. I can implement their verification using the stack method
+for LL(1) grammars in the Dragon Book. 
