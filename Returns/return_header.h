@@ -2,21 +2,21 @@
 #ifndef RETURNH
 #define RETURNH
 
-#include "list.h"
-#include "list.c"
+#include "linkedlist.h"
+#include "linkedlist.c"
 #include "stack.h"
 #include "stack.c"
 
 #define LENGTH 27
 #define WIDTH 27
 
-typedef Production List;
-typedef Element ListElmt;
+typedef List Production;
+typedef ListElmt Element;
 
 /* Can I have a multidimensional array of pointers? */
 Production *table[LENGTH][WIDTH];
 
-enum tokens
+typedef enum Token
   {
     NONE = 0, 
     IF_START = 1, 
@@ -35,10 +35,11 @@ enum tokens
     CLOSETOK = 13, 
     RETURN = 14, 
     END = 15,
-  }
+  } Token;
 
-enum nonterminals
+typedef enum Nonterminal
   {
+    /* "None" in here seems like unclean code */
     METHOD=20,
     CONTENTS=21, 
     IFLADDER=22, 
@@ -46,18 +47,18 @@ enum nonterminals
     ELSE=24, 
     IF=25, 
     ELSEIF=26,
-    ELSE=27, 
     SWITCH=28, 
     CASES=29, 
     DEFAULT=30, 
     TERMLOOP=31
-  }
+  } Nonterminal;
 
 /* Is having this function in a header good programming practice? */
 /* It might be better to follow the algorithm (using FIRST and FOLLOW) for filing tables from
  CFGs, as presented in the Dragon Book*/
-  void tableInit()
+/*  void tableInit()
   {
     
   }
+*/
 #endif

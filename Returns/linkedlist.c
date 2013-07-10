@@ -15,6 +15,10 @@ Get map to work
 Implement more features from Mastering Algorithms book
  */
 
+/* This really should be in a header file... */
+#ifndef LIST_C
+#define LIST_C
+
 #include "linkedlist.h"
 
 void list_init(List *list, void (*destroy) (void *data))
@@ -168,3 +172,5 @@ int main()
 }
 
 */
+
+#endif

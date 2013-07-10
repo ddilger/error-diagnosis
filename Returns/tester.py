@@ -1,15 +1,16 @@
-#NOTE: not entirely sure that this tester is perfect...
+#Should include line errors in the report of what's expected
+#Not really a difference between the insufficient close and unterminated block error,
+#except with arrays
 
 #Guide to test areas:
-#No potential return error
-#Potential return error
-
-#Causes:
-#Loop
-#if statement
-#switch statement
-#loop possibly not terminating
-# (more details like no else?)
+#Surplus {
+#Surplus }
+#Insufficient {
+#Insufficient }
+#Unterminated block
+#Unterminated array
+#Multiple errors in one file
+#No error
 
 from subprocess import call
 
@@ -25,15 +26,18 @@ class ErrType:
     
 def expected(error):
     if error == ErrType.SurplusOpen:
-        print("Expected error: Surplus { (Open curly) Error")
+        print("Expected error: Excess open curly error")
     if error == ErrType.SurplusClose:
-        print("Expected error: Surplus } (Close curly) Error")
+        print("Expected error: Excess close curly error")
     if error == ErrType.InsufficientOpen:
-        print("Expected error: Insufficient { Error")
+        print("Expected error: Missing open curly error")
     if error == ErrType.UnterminatedBlock:
         print("Expected error: Unterminated Block error")
+    if error == ErrType.InsufficientClose:
+        print("Expected error: Missing close curly Error")
     if error == ErrType.UnterminatedArray:
-        print("Expected error: Unterminated Array error")
+        print("Expected error: Missing close token")
+#        print("Expected error: Unterminated Array error")
     if error == ErrType.MultipleErr:
         print("Expected error: Multiple errors")
     if error == ErrType.NoErr:
@@ -42,32 +46,32 @@ def expected(error):
 #21 test cases addressing all of these fields
 
 errors = [0 for i in range(21)]
-errors[0] = ("JavaCurly1.java", ErrType.NoErr)
-errors[1] = ("JavaCurly2.java", ErrType.SurplusOpen)
-errors[2] = ("JavaCurly3.java", ErrType.SurplusClose)
-errors[3] = ("JavaCurly4.java", ErrType.NoErr)
-errors[4] = ("JavaCurly5.java", ErrType.SurplusOpen)
-errors[5] = ("JavaCurly6.java", ErrType.SurplusClose)
-errors[6] = ("JavaCurly7.java", ErrType.NoErr)
-errors[7] = ("JavaCurly8.java", ErrType.SurplusOpen)
-errors[8] = ("JavaCurly9.java", ErrType.SurplusClose)
-errors[9] = ("JavaCurly10.java", ErrType.SurplusOpen)
-errors[10] = ("JavaCurly11.java", ErrType.SurplusClose)
-errors[11] = ("JavaCurly12.java", ErrType.NoErr)
-errors[12] = ("JavaCurly13.java", ErrType.SurplusOpen)
-errors[13] = ("JavaCurly14.java", ErrType.UnterminatedBlock)
-errors[14] = ("JavaCurly15.java", ErrType.InsufficientOpen)
-errors[15] = ("JavaCurly16.java", ErrType.InsufficientClose)
-errors[16] = ("JavaCurly17.java", ErrType.NoErr)
-errors[17] = ("JavaCurly18.java", ErrType.UnterminatedArray)
-errors[18] = ("JavaCurly19.java", ErrType.InsufficientOpen)
-errors[19] = ("JavaCurly20.java", ErrType.UnterminatedArray)
-errors[20] = ("JavaCurly21.java", ErrType.MultipleErr)
+errors[0] = ("JavaCurly1.txt", ErrType.NoErr)
+errors[1] = ("JavaCurly2.txt", ErrType.SurplusOpen)
+errors[2] = ("JavaCurly3.txt", ErrType.SurplusClose)
+errors[3] = ("JavaCurly4.txt", ErrType.NoErr)
+errors[4] = ("JavaCurly5.txt", ErrType.SurplusOpen)
+errors[5] = ("JavaCurly6.txt", ErrType.SurplusClose)
+errors[6] = ("JavaCurly7.txt", ErrType.NoErr)
+errors[7] = ("JavaCurly8.txt", ErrType.SurplusOpen)
+errors[8] = ("JavaCurly9.txt", ErrType.SurplusClose)
+errors[9] = ("JavaCurly10.txt", ErrType.SurplusOpen)
+errors[10] = ("JavaCurly11.txt", ErrType.SurplusClose)
+errors[11] = ("JavaCurly12.txt", ErrType.NoErr)
+errors[12] = ("JavaCurly13.txt", ErrType.SurplusOpen)
+errors[13] = ("JavaCurly14.txt", ErrType.UnterminatedBlock)
+errors[14] = ("JavaCurly15.txt", ErrType.InsufficientOpen)
+errors[15] = ("JavaCurly16.txt", ErrType.UnterminatedBlock)
+errors[16] = ("JavaCurly17.txt", ErrType.NoErr)
+errors[17] = ("JavaCurly18.txt", ErrType.UnterminatedArray)
+errors[18] = ("JavaCurly19.txt", ErrType.InsufficientOpen)
+errors[19] = ("JavaCurly20.txt", ErrType.MultipleErr)
+errors[20] = ("JavaCurly21.txt", ErrType.MultipleErr)
 
 
 for i in errors:
-    print("Executing file ", i[0])
+    print "Executing file ", i[0] 
     expected(i[1])
-    call(["./curly2", i[0]])
+    call(["./curly_diagnoser", i[0]])
     print("")
     
