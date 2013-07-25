@@ -1,3 +1,4 @@
+/* Rewrite this to fit GNU Coding Standards... */
 #include <stdio.h>
 #include "return_header.h"
 
@@ -17,7 +18,9 @@ typedef struct Block
 {
   int blockType;
   int startLine;
+  //  int returnType;
   int color;
+  int linkage;
 } Block;
 
 Block findReturnGaps(int *indexPtr);
@@ -31,6 +34,7 @@ int t_index = 0;
 int curLine = 1;
 int tokens[100];
 int errorNum = 0;
+int last_err = 0;
 
 /************* Functions **************/
 /* To create a block that will exist beyond the execution of a function */
@@ -106,6 +110,8 @@ int readTok(int index)
 }
 void error(Block b)
 {
+  if(last_err == b.startLine)
+    return;
   printf("Missing return in ");
   switch(b.blockType)
     {
@@ -143,6 +149,7 @@ void error(Block b)
         printf("unidentified block ");
     }
   errorNum++;
+  last_err = b.startLine;
   printf("on line %i \n", b.startLine);
 }
 
@@ -176,6 +183,12 @@ int analyzeChain(Chain *chain)
 	  allReturns = 1;
 	  returnCount++;
 	}
+      /*
+      if(curBlock->color == MISSRETURN)
+	{
+	  return MISSRETURN;
+	}
+      */
     }
   if(allReturns)
     {
@@ -203,56 +216,44 @@ Block findReturnGaps(int *indexPtr)
   Block curBlock;
   Chain subChainMem;
   Chain *subChain = &subChainMem;
-  Link **curLink;
   list_init(subChain, NULL);
-  curLink = &(subChain->head);
   curBlock.blockType = blockStart(tokens[*indexPtr]);
   curBlock.startLine = curLine;
   curBlock.color = NORETURN;
-  nextTok(*indexPtr);
-  
+
   while(nextTok(*indexPtr) != CLOSETOK)
     {
+      /* Chain creation */
       if(blockStart(tokens[*indexPtr]))
 	{
-	  Link *newLink = malloc(sizeof(Link));
-	  if(*curLink == NULL)
-	    {
-	      *curLink = newLink;
-	      subChain->size++;
-	    }
-	  else
-	    {
-	      (*curLink)->next = newLink;
-	      curLink = &((*curLink)->next);
-	      subChain->size++;
-	    }
-	  (*curLink)->data = blockCopy(findReturnGaps(indexPtr));
+	  list_ins_end(subChain, blockCopy(findReturnGaps(indexPtr)));
 	}
       if(tokens[*indexPtr]==RETURN)
-	curBlock.color = HASRETURN;
+	{
+	  curBlock.color = HASRETURN;
+	}
+      /* Necessary? */
       if(tokens[*indexPtr]==END)
 	{
 	  printf("End of input unexpectedly encountered. Program crashed.\n");
 	  return curBlock;
 	}
     }
-  //  int chainColor = analyzeChain(subChain);
   if(curBlock.color != HASRETURN)
     {
+      /* Chain analysis */
       switch(analyzeChain(subChain))
-       {
-       case MISSRETURN:
-	 error(curBlock);
-	 curBlock.color = MISSRETURN;
-	 break;
+	{
+	case MISSRETURN:
+	  curBlock.color = MISSRETURN;
+	  error(curBlock);
+	  break;
 
-       case HASRETURN:
-	 curBlock.color = HASRETURN;
-	 break;
-       }
+	case HASRETURN:
+	  curBlock.color = HASRETURN;
+	  break;
+	}
     }
-
   return curBlock;
 }
 
