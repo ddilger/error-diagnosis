@@ -1,0 +1,3 @@
+The program is "diagnosis.c"
+The program can be tested by running the "tester.sh" bash script
+The program can be recompiled and tested by running "retest.sh"
